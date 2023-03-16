@@ -1,4 +1,4 @@
-#create program that input list of numbers and calculate amount 
+#ex4 - sum of entered numbers
 while True:
     try:
         nums = [int(x)for x in input("Введите несколько чисел через пробел: ").split()]
