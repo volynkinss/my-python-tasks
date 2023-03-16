@@ -1,4 +1,4 @@
-# need input two numbers and print sum of it
+# ex2 - sum two numbers
 while True:
     try:
         a = float(input("Введите первое число: ")) #input 1st number
