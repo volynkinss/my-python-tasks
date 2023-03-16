@@ -1,4 +1,4 @@
-#program for print multiplication table of number entered by the user
+#ex5 - multiplication table of the entered number
 while True:
     try:
         num = int(input("Введите целое число: "))
@@ -8,5 +8,5 @@ while True:
         print(prod)
         break
     except:
-        print("Необходимо ввести целое число")
+        print("Необходимо ввести одно целое число")
     
