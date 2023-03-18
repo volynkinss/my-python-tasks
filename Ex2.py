@@ -1,12 +1,15 @@
-# ex2 - sum two numbers
-while True:
-    try:
-        a = input("Введите первое число: ") #input 1st number
-        b = input("Введите второе число: ") #input 2nd number
-        if (a and a.strip()) and (b and b.strip()):
-            c = float(a) + float(b) #calculate sum of 2 numbers
-            print ("Сумма двух чисел равна", c) #print sum of number
-        else: print("Поле не может быть пустым")
-        break
-    except:
-        print("Необходимо вводить только числа")
+qunt = input("Введите необходимое количество чисел ")
+num = list()
+if (qunt and qunt.strip()):
+    i = 1
+    while i < (int(qunt)+1):
+        num.append(input("Введите число "))
+        i +=1
+    print(num)
+    i = len(num)
+    sum = 0
+    while i > 0:
+        sum = sum + int(num.pop())
+        i -= 1
+    print(sum)
+else: print("Поле не может быть пустым")
