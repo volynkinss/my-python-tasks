@@ -1,12 +1,22 @@
 # ex2 - sum two numbers
-while True:
-    try:
-        a = input("Введите первое число: ") #input 1st number
-        b = input("Введите второе число: ") #input 2nd number
-        if (a and a.strip()) and (b and b.strip()):
-            c = float(a) + float(b) #calculate sum of 2 numbers
-            print ("Сумма двух чисел равна", c) #print sum of number
-        else: print("Поле не может быть пустым")
-        break
-    except:
+def array_creation(size):
+    print ("количество элементов в массиве "  + str(size))
+    list = []
+    size_temp = int(size)
+    while len(list) < size:
+        number = input("Введите число ")
+        number_int = int(number)
+        list.append(number_int)
+
+    return list
+
+
+try:
+   element_count = input("Введи количество элементов в массиве ")
+   element_count_size = int(element_count)
+   summ = array_creation(element_count_size)
+   result = sum(summ)
+   print("Сумма чисел введенных равна " , result)
+except Exception as e:
         print("Необходимо вводить только числа")
+        print(e)
