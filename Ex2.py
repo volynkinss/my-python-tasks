@@ -16,7 +16,7 @@ try:
     array_of_elements = get_elements_from_input(element_count_size)
     result = sum(array_of_elements)
     print("Сумма введенных чисел равна ", result)
-except ValueError as v:
+except ValueError:
     print("Необходимо вводить только целые числа")
 except Exception as e:
     print("Произошла ошибка: ", e)
