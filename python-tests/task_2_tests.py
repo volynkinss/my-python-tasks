@@ -8,8 +8,10 @@ import Ex2
 class TestEx2(unittest.TestCase):
     def test_get_array(self):
         self.assertEqual(Ex2.get_array(1, 4, 5, 2, 0), 12)
+
+    def test_get_array_with_error(self):
         with self.assertRaises(NameError):
-            Ex2.get_array(Б)
+            Ex2.get_array(B)
 
 
 if __name__ == "__main__":
