@@ -12,7 +12,7 @@
 #     return list
 
 
-def get_array_size(*array_of_elements: list):
+def get_array(*array_of_elements: list):
     try:
         #        array_of_elements = get_elements_from_input(array_size)
         result = sum(array_of_elements)
@@ -30,4 +30,4 @@ def get_array_size(*array_of_elements: list):
 # if __name__ == "__main__":
 #     main()
 
-get_array_size(1, 2, 3, 4, 5)
+get_array(1, 2, 3, 4, 5)
