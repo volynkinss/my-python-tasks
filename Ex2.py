@@ -16,7 +16,7 @@ def get_array(*array_of_elements: list):
     try:
         #        array_of_elements = get_elements_from_input(array_size)
         result = sum(array_of_elements)
-        print("Сумма введенных чисел равна ", result)
+        return result
     except ValueError:
         print("Необходимо вводить только целые числа")
     except Exception as e:
@@ -30,4 +30,4 @@ def get_array(*array_of_elements: list):
 # if __name__ == "__main__":
 #     main()
 
-get_array(1, 2, 3, 4, 5)
+print("Сумма введеных чисел равна", get_array(1, 4, 5, 2, 0))
