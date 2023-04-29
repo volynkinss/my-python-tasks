@@ -16,5 +16,5 @@ def get_weather(city):
     return weather
 
 if __name__ == '__main__':
-    current_weather = get_weather("Msk")
-    print(f"Temperature on St.Petersburg now is a {current_weather['temperature']} degrees Celsius")
+    current_weather = get_weather("Spb")
+    print(f"Temperature now is a {current_weather['temperature']} degrees Celsius")
