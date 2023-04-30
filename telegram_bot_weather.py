@@ -10,12 +10,12 @@ async def welcome(message: types.Message):
 @dp.message_handler(commands=['spb', 'SPB'])
 async def weather_spb(message: types.Message):
     current_weather = get_weather("spb")
-    await message.reply(f"Temperature in St.Petersburg now is a {current_weather['temperature']} degrees Celsius")
+    await message.reply(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
 
 @dp.message_handler(commands=['msk', 'MSK'])
 async def weather_spb(message: types.Message):
     current_weather = get_weather("msk")
-    await message.reply(f"Temperature in Moscow now is a {current_weather['temperature']} degrees Celsius")
+    await message.reply(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
 
 @dp.message_handler()
 async def echo(message: types.Message):
