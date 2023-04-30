@@ -17,6 +17,11 @@ async def weather_spb(message: types.Message):
     current_weather = get_weather("msk")
     await message.reply(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
 
+@dp.message_handler(commands=['muc', 'MUC'])
+async def weather_spb(message: types.Message):
+    current_weather = get_weather("muc")
+    await message.reply(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
+
 @dp.message_handler()
 async def echo(message: types.Message):
     await message.answer(message.text)
