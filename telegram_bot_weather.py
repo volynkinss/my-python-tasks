@@ -5,7 +5,7 @@ bot = Bot(token="6107139755:AAHSRA8PA35xhTxfC2g9bdcIF_y72OMnSl0")
 dp = Dispatcher(bot)
 @dp.message_handler(commands=['start', 'help'])
 async def welcome(message: types.Message):
-    await message.reply("Hello! I'm weather telegram bot and I can show actually weather for you. Enter '/spb' for see temperature in St.Petersburg, '/msk' for see temperature in Moscow")
+    await message.reply("Hello! I'm weather telegram bot and I can show actually weather for you. Enter '/spb' for see temperature in St.Petersburg, '/msk' for see temperature in Moscow and ‘/muc’ for see temperature in Munich")
 
 @dp.message_handler(commands=['spb', 'SPB'])
 async def weather_spb(message: types.Message):
