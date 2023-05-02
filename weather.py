@@ -26,5 +26,3 @@ def get_weather(city):
         print("This city is not on the list ")
     except Exception as er:
         print(er)
-
-print(get_weather("spb"))
