@@ -23,6 +23,7 @@ def get_weather(city):
         weather_text = f"Temperature in {request_city.name} now is a {weather['temperature']} degrees Celsius"
         return weather_text
     except KeyError:
-        print("This city is not on the list ")
+        weather_text = ("This city is not on the list ")
+        return weather_text
     except Exception as er:
-        print(er)
+        return er
