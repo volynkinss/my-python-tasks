@@ -1,16 +1,15 @@
 import requests
 import json
 
-
-def get_weather(city):
-    try:
-        coordinates = {"latitude": "", "longitude":"","current_weather":"true"}
-        town = ""
-        list_of_cities = {
+list_of_cities = {
             "spb":("Saint Petersburg", "59.94", "30.31"),
             "msk":("Moscow", "55.75", "37.62"),
             "muc":("Munich", "48.14", "11.58")
             }
+def get_weather(city):
+    try:
+        coordinates = {"latitude": "", "longitude":"","current_weather":"true"}
+        town = ""
         coordinates["latitude"]=list_of_cities[city.lower()][1]
         coordinates["longitude"]=list_of_cities[city.lower()][2]
         town = list_of_cities[city.lower()][0]
@@ -23,4 +22,4 @@ def get_weather(city):
         print(er)
 
 if __name__ == '__main__':
-    get_weather("mus")
+    get_weather("muc")
