@@ -10,11 +10,13 @@ async def welcome(message: types.Message):
 
 @dp.message_handler(commands=['spb', 'msk', 'muc'])
 async def weather_spb(message: types.Message):
-    current_weather = get_weather(message.text[1:])
-    await message.reply(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
+    text = get_weather(message.text[1:])
+    await message.reply(text)
+
 
 @dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
+async def weather_spb(message: types.Message):
+    text = get_weather(message.text[1:])
+    await message.reply(text)
 
 executor.start_polling(dp)
