@@ -1,28 +1,30 @@
 import requests
 import json
 
+class City:
+    def __init__(self, name, latitude, longitude):
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+
 list_of_cities = {
-            "spb":("Saint Petersburg", "59.94", "30.31"),
-            "msk":("Moscow", "55.75", "37.62"),
-            "muc":("Munich", "48.14", "11.58")
+            "spb":City("Saint Petersburg", 59.94, 30.31),
+            "msk":City("Moscow", 55.75, 37.62),
+            "muc":City("Munich", 48.14, 11.58)
             }
 
 def get_weather(city):
     try:
         city = city.lower()
-        class City_characteristics:
-            name = list_of_cities[city][0]
-            latitude = list_of_cities[city][1]
-            longitude = list_of_cities[city][2]
-        city = City_characteristics()
-        coordinates = {"latitude": city.latitude, "longitude":city.longitude,"current_weather":"true"}
+        request_city = list_of_cities[city]
+        coordinates = {"latitude": request_city.latitude, "longitude": request_city.longitude, "current_weather":"true"}
         r = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
         weather = r.json()['current_weather']
-        print(f"Temperature in {city.name} now is a {weather['temperature']} degrees Celsius")
+        weather_text = f"Temperature in {request_city.name} now is a {weather['temperature']} degrees Celsius"
+        return weather_text
     except KeyError:
         print("This city is not on the list ")
     except Exception as er:
         print(er)
 
-if __name__ == '__main__':
-    get_weather("spb")
+print(get_weather("spb"))
