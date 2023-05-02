@@ -1,27 +1,26 @@
 import requests
 import json
 
+
 def get_weather(city):
-    coordinates = {"latitude": "", "longitude":"","current_weather":"true"}
-    town = ""
-    if city.lower() == "spb":
-        coordinates["latitude"]=59.94
-        coordinates["longitude"]=30.31
-        town = "Saint Petersburg"
-    elif city.lower() == "msk":
-        coordinates["latitude"]=55.75
-        coordinates["longitude"]=37.62
-        town = "Moscow"
-    elif city.lower() == "muc":
-        coordinates["latitude"]=48.14
-        coordinates["longitude"]=11.58
-        town = "Munich"
-    else:
-        print("You can choose only 'SPB' , 'MSK' and 'MUC'")
-    r = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
-    weather = r.json()['current_weather']
-    return weather , town
+    try:
+        coordinates = {"latitude": "", "longitude":"","current_weather":"true"}
+        town = ""
+        list_of_cities = {
+            "spb":("Saint Petersburg", "59.94", "30.31"),
+            "msk":("Moscow", "55.75", "37.62"),
+            "muc":("Munich", "48.14", "11.58")
+            }
+        coordinates["latitude"]=list_of_cities[city.lower()][1]
+        coordinates["longitude"]=list_of_cities[city.lower()][2]
+        town = list_of_cities[city.lower()][0]
+        r = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
+        weather = r.json()['current_weather']
+        print(f"Temperature in {town} now is a {weather['temperature']} degrees Celsius")
+    except KeyError:
+        print("This city is not on the list ")
+    except Exception as er:
+        print(er)
 
 if __name__ == '__main__':
-    current_weather = get_weather("muc")
-    print(f"Temperature in {current_weather[-1]} now is a {current_weather[0]['temperature']} degrees Celsius")
+    get_weather("mus")
