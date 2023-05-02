@@ -18,8 +18,8 @@ def get_weather(city):
         city = city.lower()
         request_city = list_of_cities[city]
         coordinates = {"latitude": request_city.latitude, "longitude": request_city.longitude, "current_weather":"true"}
-        r = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
-        weather = r.json()['current_weather']
+        reference = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
+        weather = reference.json()['current_weather']
         weather_text = f"Temperature in {request_city.name} now is a {weather['temperature']} degrees Celsius"
         return weather_text
     except KeyError:
