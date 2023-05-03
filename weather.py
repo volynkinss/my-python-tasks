@@ -24,3 +24,14 @@ def get_weather(city):
         return weather_text
     except Exception as er:
         raise
+
+def get_weather_from_location(latitude,longitude):
+    try:
+        coordinates = {"latitude": latitude, "longitude": longitude, "current_weather":"true"}
+        reference = requests.get('https://api.open-meteo.com/v1/forecast', params=coordinates)
+        weather = reference.json()['current_weather']
+        weather_text = f"Temperature in your location now is a {weather['temperature']} degrees Celsius"
+        return weather_text
+    except Exception as er:
+        raise
+
