@@ -22,8 +22,16 @@ def get_weather(city):
         weather = reference.json()['current_weather']
         weather_text = f"Temperature in {request_city.name} now is a {weather['temperature']} degrees Celsius"
         return weather_text
-    except KeyError:
-        weather_text = ("This city is not on the list ")
-        return weather_text
-    except Exception as er:
-        return er
+    except KeyError as e:
+        raise
+    except NameError as e:
+        raise
+    except TypeError as e:
+        raise
+    except AttributeError as e:
+        raise
+    except Exception as er: 
+        raise
+
+
+
