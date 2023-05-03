@@ -22,16 +22,5 @@ def get_weather(city):
         weather = reference.json()['current_weather']
         weather_text = f"Temperature in {request_city.name} now is a {weather['temperature']} degrees Celsius"
         return weather_text
-    except KeyError:
+    except Exception as er:
         raise
-    except NameError:
-        raise
-    except TypeError:
-        raise
-    except AttributeError:
-        raise
-    except Exception as er: 
-        raise
-
-
-
