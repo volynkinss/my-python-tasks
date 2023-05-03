@@ -1,12 +1,13 @@
 from aiogram import Bot, Dispatcher, executor, types
-from weather import get_weather
+from weather import get_weather, get_weather_from_location
 import token_for_bot
+from aiogram.types import Message, Location
 
 bot = Bot(token=token_for_bot.token_bot)
 dp = Dispatcher(bot)
 @dp.message_handler(commands=['start', 'help'])
 async def welcome(message: types.Message):
-    await message.reply("Hello! I'm weather telegram bot and I can show actually weather for you. Enter '/spb' for see temperature in St.Petersburg, '/msk' for see temperature in Moscow and ‘/muc’ for see temperature in Munich")
+    await message.reply("Hello! I'm weather telegram bot and I can show actually weather for you. Enter '/spb' for see temperature in St.Petersburg, '/msk' for see temperature in Moscow and ‘/muc’ for see temperature in Munich. If you want to get temperature in your location you should to send your location to weather_bot.")
 
 @dp.message_handler(commands=['spb', 'msk', 'muc'])
 async def weather_spb(message: types.Message):
@@ -14,9 +15,25 @@ async def weather_spb(message: types.Message):
     await message.reply(text)
 
 
-@dp.message_handler()
-async def weather_spb(message: types.Message):
-    text = get_weather(message.text[1:])
+# @dp.message_handler()
+# async def weather_spb(message: types.Message):
+#     text = get_weather(message.text[1:])
+#     await message.reply(text)
+
+@dp.message_handler(content_types=['location'])
+async def handle_location (message: Message):
+    location = message.location
+    global latitude, longitude
+    latitude = location.latitude
+    longitude = location.longitude
+    text = get_weather_from_location(str(round(latitude,2)), str(round(longitude,2)))
     await message.reply(text)
+
+
+# @dp.message_handler(commands=['my_locate'])
+# async def weather(message: types.Message):
+#     text = get_weather_from_location(str(round(latitude,2)), str(round(longitude,2)))
+#     await message.reply(text)
+
 
 executor.start_polling(dp)
