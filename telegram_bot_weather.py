@@ -12,8 +12,8 @@ print("start of get_weather app")
 @dp.message_handler(commands=["start"])
 async def welcome(message: types.Message):
     await message.reply(
-        """Hello! I'm weather telegram bot and I can show actually weather for you.
-For read usage information press '/help'"""
+        """Hello!👋 I'm weather telegram bot and I can show actually weather for you.
+For read usage information press '/help'⬅️"""
     )
 
 
@@ -21,11 +21,11 @@ For read usage information press '/help'"""
 async def welcome(message: types.Message):
     await message.reply(
         """Press:
-'/spb' for see temperature in St.Petersburg, 
-'/msk' for see temperature in Moscow or 
-'/muc' for see temperature in Munich. 
-If you want to get temperature in your location you should to send your location to weather_bot.
-Let's started!"""
+'/spb' for see temperature in St.Petersburg🏛️, 
+'/msk' for see temperature in Moscow🏙️ or 
+'/muc' for see temperature in Munich🍺. 
+If you want to get temperature in your location you should to send your location to weather_bot🙋‍♂️.
+Let's started!🚀"""
     )
 
 
