@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
-from weather import get_weather, get_weather_from_location
+from weather import get_weather_from_location
 import token_for_bot
 from aiogram.types import Message, Location
 
@@ -11,7 +11,7 @@ async def welcome(message: types.Message):
 
 @dp.message_handler(commands=['spb', 'msk', 'muc'])
 async def weather_spb(message: types.Message):
-    text = get_weather(message.text[1:])
+    text = get_weather_from_location(message.text[1:])
     await message.reply(text)
 
 
@@ -25,7 +25,8 @@ async def handle_location (message: Message):
     location = message.location
     latitude = location.latitude
     longitude = location.longitude
-    text = get_weather_from_location(str(round(latitude,2)), str(round(longitude,2)))
+    location_for_function = (latitude , longitude)
+    text = get_weather_from_location(location_for_function)
     await message.reply(text)
 
 
