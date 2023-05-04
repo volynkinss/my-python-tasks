@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
-from weather import get_weather_from_location
+from weather import get_weather_from_location, get_coordinates
 import token_for_bot
 from aiogram.types import Message, Location
 
@@ -31,30 +31,18 @@ Let's started!🚀"""
 
 @dp.message_handler(commands=["spb", "msk", "muc"])
 async def weather(message: types.Message):
-    text = get_weather_from_location(message.text[1:])
+    location, geolocation = get_coordinates(message.text[1:])
+    temperature = get_weather_from_location(location)
+    text = f"Temperature in {geolocation} now is a {temperature} degrees Celsius"
     await message.reply(text)
-
-
-# @dp.message_handler()
-# async def weather_spb(message: types.Message):
-#     text = get_weather(message.text[1:])
-#     await message.reply(text)
 
 
 @dp.message_handler(content_types=["location"])
 async def handle_location(message: Message):
     location = message.location
-    latitude = location.latitude
-    longitude = location.longitude
-    location_for_function = (latitude, longitude)
-    text = get_weather_from_location(location_for_function)
+    temperature = get_weather_from_location(location)
+    text = f"Temperature in your location now is a {temperature} degrees Celsius"
     await message.reply(text)
-
-
-# @dp.message_handler(commands=['my_locate'])
-# async def weather(message: types.Message):
-#     text = get_weather_from_location(str(round(latitude,2)), str(round(longitude,2)))
-#     await message.reply(text)
 
 
 executor.start_polling(dp)
