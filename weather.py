@@ -41,12 +41,11 @@ def get_location(location):
 def get_weather_from_location(location):
     print("start of get_weather_from_location_function")
     try:
-        locate_for_params = get_location(location)[0]
+        locate_for_params, geolocation = get_location(location)
         reference = requests.get(
             "https://api.open-meteo.com/v1/forecast", params=locate_for_params
         )
         weather = reference.json()["current_weather"]
-        geolocation = get_location(location)[1]
         weather_text = f"Temperature in {geolocation} now is a {weather['temperature']} degrees Celsius"
         return weather_text
     except Exception as er:
