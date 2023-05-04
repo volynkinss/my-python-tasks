@@ -23,7 +23,6 @@ async def weather_spb(message: types.Message):
 @dp.message_handler(content_types=['location'])
 async def handle_location (message: Message):
     location = message.location
-    global latitude, longitude
     latitude = location.latitude
     longitude = location.longitude
     text = get_weather_from_location(str(round(latitude,2)), str(round(longitude,2)))
