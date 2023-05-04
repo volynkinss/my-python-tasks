@@ -16,45 +16,30 @@ list_of_cities = {
 }
 
 
-def get_location(location):
-    print("start of get_location_function")
-    latitude = ""
-    longitude = ""
-    if type(location) == str:
-        location = location.lower()
-        request_city = list_of_cities[location]
-        latitude = request_city.latitude
-        longitude = request_city.longitude
-        geolocation = request_city.name
-    elif type(location) == tuple:
-        latitude = location[0]
-        longitude = location[1]
-        geolocation = "your location"
-    coordinates = {
-        "latitude": latitude,
-        "longitude": longitude,
-        "current_weather": "true",
-    }
-    return coordinates, geolocation
+def get_coordinates(city):
+    print("started get_coordinates_function")
+    city = city.lower()
+    request_city = list_of_cities[city]
+    location = request_city.latitude, request_city.longitude
+    geolocation = request_city.name
+    return location, geolocation
 
 
 def get_weather_from_location(location):
     print("start of get_weather_from_location_function")
     try:
-        locate_for_params, geolocation = get_location(location)
+        latitude, longitude = location
+        coordinates = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "current_weather": "true",
+        }
         reference = requests.get(
-            "https://api.open-meteo.com/v1/forecast", params=locate_for_params
+            "https://api.open-meteo.com/v1/forecast",
+            params=coordinates,
         )
         weather = reference.json()["current_weather"]
-        weather_text = f"Temperature in {geolocation} now is a {weather['temperature']} degrees Celsius"
-        return weather_text
+        temperature = weather["temperature"]
+        return temperature
     except Exception as er:
         raise
-
-
-# def get_weather(city):
-#     city = city.lower()
-#     request_city = list_of_cities[city]
-#     latitude = request_city.latitude
-#     longitude = request_city.longitude
-#     get_weather_from_location(latitude , longitude)
