@@ -19,7 +19,7 @@ async def delete_msgs():  # function that delete unnecessary msgs
     print("strat of delete_msgs_function")
     while list_of_messages_id != []:
         for id in list_of_messages_id:
-            await bot.delete_message(chat_id=218947055, message_id=id)
+            await bot.delete_message(chat_id=chat_id, message_id=id)
             list_of_messages_id.remove(id)
 
 
@@ -50,6 +50,8 @@ def add_reply_msg_id_to_list(
 
 @dp.message_handler(commands=["start"])
 async def welcome(message: types.Message):
+    global chat_id
+    chat_id = message.chat.id
     add_command_msg_id_to_list(message)
     add_reply_msg_id_to_list(message)
     await message.reply(
