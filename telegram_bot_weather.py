@@ -4,6 +4,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import weather
 import token_for_bot
+import asyncio
 
 
 bot = Bot(token=token_for_bot.token_bot)
@@ -92,6 +93,9 @@ async def handle_city_command(message: types.Message):
     text = f"{city.name}'s t° now is a {temperature} °C"
     await message.reply(text)
     await delete_msgs(chat_id)
+    message_id = message.message_id + 1
+    await asyncio.sleep(20)
+    await bot.delete_message(chat_id=chat_id, message_id=message_id)
 
 
 @dp.message_handler(content_types=["location"])
@@ -106,6 +110,9 @@ async def handle_location(message: Message):
     text = f"Temperature in your location now {temperature} °C"
     await message.reply(text)
     await delete_msgs(chat_id)
+    message_id = message.message_id + 1
+    await asyncio.sleep(20)
+    await bot.delete_message(chat_id=chat_id, message_id=message_id)
 
 
 # used functions below to test and learning
