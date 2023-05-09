@@ -1,5 +1,12 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import Message
+from aiogram.types import (
+    Message,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+    ReplyKeyboardRemove,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+)
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import weather
@@ -54,6 +61,14 @@ For usage information press '/help'⬅️
     )
 
 
+button_spb = KeyboardButton("/spb")
+button_msk = KeyboardButton("/msk")
+button_muc = KeyboardButton("/muc")
+button_location = KeyboardButton("location", request_location=True)
+greet_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+greet_kb.add(button_spb, button_msk, button_muc, button_location)
+
+
 @dp.message_handler(commands=["help"])
 async def help(message: types.Message):
     chat_id = message.chat.id
@@ -66,7 +81,8 @@ async def help(message: types.Message):
 '/msk' for see t° in Moscow 🏙️ or 
 '/muc' for see t° in Munich 🍺
 or just send your current location to weather_bot 🙋‍♂️.
-Let's start! 🚀"""
+Let's start! 🚀""",
+        reply_markup=greet_kb,
     )
 
 
