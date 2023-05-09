@@ -1,11 +1,9 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import Message, ContentType
-from aiogram.dispatcher import Dispatcher, filters, FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.types import Message
+from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 import weather
 import token_for_bot
-import asyncio
 
 
 bot = Bot(token=token_for_bot.token_bot)
