@@ -1,6 +1,7 @@
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import Message
-from aiogram.dispatcher import Dispatcher
+from aiogram.types import Message, ContentType
+from aiogram.dispatcher import Dispatcher, filters, FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import executor
 import weather
 import token_for_bot
@@ -92,9 +93,26 @@ async def handle_location(message: Message):
     temperature = weather.get_weather_from_location(
         location.latitude, location.longitude
     )
-    text = f"Temperature in your location now {temperature} °C"
+    city, street = weather.get_data_from_location(location.latitude, location.longitude)
+    text = f"Temperature in {city} near {street} in your location is {temperature} °C"
     await message.reply(text)
     await delete_msgs(chat_id)
+
+
+async def handle_message(message: types.Message):
+    content_type = message.content_type
+    print(content_type)
+
+
+# async def handle_venue(message: types.Message, state: FSMContext):
+#     venue = message.venue
+#     latitude = venue.location.latitude
+#     longitude = venue.location.longitude
+#     title = venue.title
+#     address = venue.address
+#     # Делаем что-то с полученными данными
+#     await message.answer(f"Вы выбрали место {title} по адресу {address}. Координаты: ({latitude}, {longitude})")
+#     await state.finish()
 
 
 executor.start_polling(dp)

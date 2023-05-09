@@ -1,4 +1,5 @@
 import requests
+from API_Key_for_weather import key
 
 
 class City:
@@ -38,6 +39,28 @@ def get_weather_from_location(latitude, longitude):
         current_weather = data["current_weather"]
         temperature = current_weather["temperature"]
         return temperature
+    except Exception as ex:
+        print("Error:" + ex)
+        raise
+
+
+def get_data_from_location(latitude, longitude):
+    print("start of get_name_from_location_function")
+    try:
+        coordinates = {
+            "lat": latitude,
+            "lon": longitude,
+            "apiKey": key,
+        }
+        reference = requests.get(
+            "https://api.geoapify.com/v1/geocode/reverse",
+            params=coordinates,
+        )
+        data = reference.json()
+        data_list = data["features"]
+        city = data_list[0]["properties"]["city"]
+        street = data_list[0]["properties"]["address_line1"]
+        return city, street
     except Exception as ex:
         print("Error:" + ex)
         raise
