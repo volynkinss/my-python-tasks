@@ -99,20 +99,19 @@ async def handle_location(message: Message):
     await delete_msgs(chat_id)
 
 
-async def handle_message(message: types.Message):
-    content_type = message.content_type
-    print(content_type)
-
-
-# async def handle_venue(message: types.Message, state: FSMContext):
-#     venue = message.venue
-#     latitude = venue.location.latitude
-#     longitude = venue.location.longitude
-#     title = venue.title
-#     address = venue.address
-#     # Делаем что-то с полученными данными
-#     await message.answer(f"Вы выбрали место {title} по адресу {address}. Координаты: ({latitude}, {longitude})")
-#     await state.finish()
+@dp.message_handler(content_types=["venue"])
+async def handle_venue(message: Message):
+    chat_id = message.chat.id
+    print(f"start handle_message_function for chat:{chat_id}")
+    add_command_msg_id_to_list(message, chat_id)
+    location = message.location
+    temperature = weather.get_weather_from_location(
+        location.latitude, location.longitude
+    )
+    city, street = weather.get_data_from_location(location.latitude, location.longitude)
+    text = f"Temperature in {city} near {street} in your location is {temperature} °C"
+    await message.reply(text)
+    await delete_msgs(chat_id)
 
 
 executor.start_polling(dp)
