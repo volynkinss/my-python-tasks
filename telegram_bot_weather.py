@@ -26,13 +26,6 @@ def add_command_msg_id_to_list(
     messages_to_delete[chat_id].append(message_id)
 
 
-def add_reply_msg_id_to_list(
-    message_id, chat_id
-):  # function that add msg id of msg replyed for command to list_of_messages_id
-    print(f"start of add_reply_msg_id_to_listfunction for chat:{chat_id}")
-    messages_to_delete[chat_id].append(message_id)
-
-
 async def cleanup_chat_history(chat_id):  # function that delete unnecessary msgs
     print(f"start of delete_msgs_function for chat:{chat_id}")
     while messages_to_delete[chat_id] != []:
@@ -41,7 +34,7 @@ async def cleanup_chat_history(chat_id):  # function that delete unnecessary msg
             print(id)
             await bot.delete_message(chat_id=chat_id, message_id=id)
             messages_to_delete[chat_id].remove(id)
-
+        messages_to_delete[chat_id].clear()
     print(messages_to_delete[chat_id])
 
 
@@ -52,13 +45,14 @@ async def start_handler(message: types.Message):
     if chat_id not in messages_to_delete:
         messages_to_delete[chat_id] = []
     add_command_msg_id_to_list(message.message_id, chat_id)
-    reply_message_id = message.message_id + 1
-    add_reply_msg_id_to_list(reply_message_id, chat_id)
-    await message.reply(
+    # reply_message_id = message.message_id + 1
+    # add_reply_msg_id_to_list(reply_message_id, chat_id)
+    reply_message = await message.reply(
         f"""Hello! 👋 I'm weather telegram bot and I can get actual weather for you.
 For usage information press '/help'⬅️
-"""
+""",
     )
+    add_command_msg_id_to_list(reply_message.message_id, chat_id)
 
 
 # button_spb = KeyboardButton("/spb")
@@ -68,12 +62,12 @@ For usage information press '/help'⬅️
 # greet_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 # greet_kb.add(button_spb, button_msk, button_muc, button_location)
 
-# inline_button_spb = KeyboardButton("St.Petersburg 🏛️", callback_data="/spb")
-# inline_button_msk = KeyboardButton("Moscow 🏙️", callback_data="/msk")
-# inline_button_muc = KeyboardButton("Munich 🍺", callback_data="/muc")
+inline_button_spb = KeyboardButton("St.Petersburg 🏛️", callback_data="/spb")
+inline_button_msk = KeyboardButton("Moscow 🏙️", callback_data="/msk")
+inline_button_muc = KeyboardButton("Munich 🍺", callback_data="/muc")
 # inline_button_location = KeyboardButton("Location", request_location=True)
-# inline_greet_kb = InlineKeyboardMarkup(one_time_keyboard=True)
-# inline_greet_kb.add(inline_button_spb, inline_button_msk, inline_button_muc)
+inline_greet_kb = InlineKeyboardMarkup(one_time_keyboard=True)
+inline_greet_kb.add(inline_button_spb, inline_button_msk, inline_button_muc)
 
 
 @dp.message_handler(commands=["help"])
@@ -81,22 +75,34 @@ async def help_handler(message: types.Message):
     chat_id = message.chat.id
     print(f"start function of comand 'help' for chat:{chat_id}")
     add_command_msg_id_to_list(message.message_id, chat_id)
-    reply_message_id = message.message_id + 1
-    add_reply_msg_id_to_list(reply_message_id, chat_id)
-    await message.reply(
+    # reply_message_id = message.message_id + 1
+    # add_reply_msg_id_to_list(reply_message_id, chat_id)
+    reply_message = await message.reply(
         """Press:
 '/spb' for see t° in St.Petersburg 🏛️, 
 '/msk' for see t° in Moscow 🏙️ or 
 '/muc' for see t° in Munich 🍺
 or just send your current location to weather_bot 🙋‍♂️.
 Let's start! 🚀""",
-        # reply_markup=inline_greet_kb,
+        reply_markup=inline_greet_kb,
     )
+    add_command_msg_id_to_list(reply_message.message_id, chat_id)
 
 
-# @dp.callback_query_handler(filters.Text("/spb"))
-# async def process_callback_inline_button_spb(callback_query: types.CallbackQuery):
-#     await callback_query.message.answer("spb")
+@dp.callback_query_handler(
+    filters.Text("/spb") | filters.Text("/msk") | filters.Text("/muc")
+)
+async def process_callback_inline_button_spb(callback_query: types.CallbackQuery):
+    chat_id = callback_query.message.chat.id
+    print(f"start process_callback_inline_button_spb_functon for {chat_id}")
+    add_command_msg_id_to_list(callback_query.message.message_id, chat_id)
+    city = weather.get_coordinates(callback_query.data)
+    print("city")
+    temperature = weather.get_weather_from_location(city.latitude, city.longitude)
+    print("temp")
+    text = f"{city.name}'s t° now is a {temperature} °C"
+    await callback_query.message.answer(text)
+    await cleanup_chat_history(chat_id)
 
 
 @dp.message_handler(commands=["spb", "msk", "muc"])
@@ -107,8 +113,8 @@ async def city_command_handler(message: types.Message):
     city = weather.get_coordinates(message.text)
     temperature = weather.get_weather_from_location(city.latitude, city.longitude)
     text = f"{city.name}'s t° now is a {temperature} °C"
-    await cleanup_chat_history(chat_id)
     await message.reply(text)
+    await cleanup_chat_history(chat_id)
 
 
 @dp.message_handler(content_types=["location"])
