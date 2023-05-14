@@ -8,9 +8,10 @@ dp = Dispatcher(bot)
 
 
 class Locale:
+    Temp = "🌡️"
     START = "Hello! 👋 I'm a weather bot. For usage information, press /help."
     HELP = "Press the city name or send your location to get the weather."
-    WEATHER_TEMPLATE = "The temperature in {} is {} °C."
+    WEATHER_TEMPLATE = Temp + "The temperature in {} is {} °C."
     ERROR = "Oops! Something went wrong. Please try again."
 
 
@@ -33,12 +34,14 @@ async def help_handler(message: types.Message):
 
 @dp.callback_query_handler(text=["/spb", "/msk", "/muc"])
 async def city_callback_handler(callback_query: types.CallbackQuery):
-    city = callback_query.data[1:].capitalize()
+    city = callback_query.data[1:]
     try:
-        temperature = weather.get_weather(city)
-        weather_message = Locale.WEATHER_TEMPLATE.format(city, temperature)
+        location = weather.get_coordinates(city)
+        temperature = weather.get_weather_from_location(
+            location.latitude, location.longitude
+        )
+        weather_message = Locale.WEATHER_TEMPLATE.format(location.name, temperature)
         await callback_query.message.answer(weather_message)
-        await cleanup_history(callback_query.message)
     except Exception:
         await handle_error(callback_query.message.chat.id)
 
@@ -50,19 +53,11 @@ async def location_handler(message: types.Message):
         temperature = weather.get_weather_from_location(
             location.latitude, location.longitude
         )
-        city = weather.get_city_from_location(location.latitude, location.longitude)
-        weather_message = Locale.WEATHER_TEMPLATE.format(city, temperature)
+        _, street = weather.get_data_from_location(
+            location.latitude, location.longitude
+        )
+        weather_message = Locale.WEATHER_TEMPLATE.format(street, temperature)
         await message.reply(weather_message)
-        await cleanup_history(message)
-    except Exception:
-        await handle_error(message.chat.id)
-
-
-async def cleanup_history(message: types.Message):
-    try:
-        async for msg in bot.iter_history(message.chat.id):
-            if msg.message_id != message.message_id:
-                await bot.delete_message(message.chat.id, msg.message_id)
     except Exception:
         await handle_error(message.chat.id)
 

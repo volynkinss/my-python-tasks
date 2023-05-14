@@ -51,9 +51,9 @@ def get_data_from_location(latitude, longitude):
             "https://api.geoapify.com/v1/geocode/reverse", params=coordinates
         )
         data = response.json()
-        features = data["features"]
-        city = features[0]["properties"]["city"]
-        street = features[0]["properties"]["address_line1"]
+        feature = data["features"][0]
+        city = feature["properties"]["city"]
+        street = feature["properties"]["address_line1"]
         return city, street
     except Exception as ex:
         print(f"Error: {ex}")
