@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.types import KeyboardButton, InlineKeyboardMarkup
 import weather
 import token_for_bot
+from aiogram.utils import executor
 
 bot = Bot(token=token_for_bot.token_bot)
 dp = Dispatcher(bot)
@@ -34,7 +35,8 @@ async def help_handler(message: types.Message):
 
 @dp.callback_query_handler(text=["/spb", "/msk", "/muc"])
 async def city_callback_handler(callback_query: types.CallbackQuery):
-    city = callback_query.data[1:]
+    city = callback_query.data[:]
+    print(city)
     try:
         location = weather.get_coordinates(city)
         temperature = weather.get_weather_from_location(
@@ -66,4 +68,4 @@ async def handle_error(chat_id: int):
     await bot.send_message(chat_id, Locale.ERROR)
 
 
-bot.polling()
+executor.start_polling(dp)
